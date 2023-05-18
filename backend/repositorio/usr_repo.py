@@ -2,6 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.orm.session import Session
 from fastapi.exceptions import HTTPException
 from modelos.usr_model import UsrBd, UsrApi
+from modelos.pais_model import PaisBd
+from modelos.genero_model import GeneroBd
 import re
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -9,7 +11,9 @@ from dateutil.relativedelta import relativedelta
 
 class UsrRepositorio:
     def lista_usr(self, session: Session):
-        return session.execute(select(UsrBd)).scalars().all()
+        usr = session.query(UsrBd).join(GeneroBd).filter(UsrBd.genero_id == GeneroBd.genero_id).join(PaisBd).filter(PaisBd.pais_id == UsrBd.pais_id).all()
+        #return session.execute(select(UsrBd)).scalars().all()
+        return usr
     
     def usr_by_id(self, id: int, session: Session):
         usr = session.execute(select(UsrBd).where(UsrBd.usuario_id == id)).scalar()
