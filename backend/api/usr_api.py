@@ -13,16 +13,16 @@ repo = UsrRepositorio()
 def get_all(s: Session = Depends(get_session)):
     return repo.lista_usr(s)
 
-@usr_router.get('/{id}')
+@usr_router.get('/buscar-usuario/{id}')
 def get_by_id(id: int, s: Session = Depends(get_session)):
     return repo.usr_by_id(id, s)
 
-@usr_router.post('/', response_model=UsrApi)
+@usr_router.post('/agregar-usuario', response_model=UsrApi)
 def agregar_usr(datos: UsrApi, s: Session = Depends(get_session)):
     usr = repo.agregar_usr(datos, s)
     return usr
 
-@usr_router.put('/{id}', response_model=UsrApi)
+@usr_router.put('/modificar-usuario/{id}', response_model=UsrApi)
 def modificar_usr(id: int, datos: UsrApi, s: Session = Depends(get_session)):
     usr = repo.modificar_usr(id, datos, s)
     return usr

@@ -1,15 +1,13 @@
-"use client"
 import axios from 'axios'
 import React, { useEffect, useState} from 'react'
-import Genero from '../Genero/listado-genero';
-import Pais from "../Pais/listado-pais";
+// import ListadoGenero from '../genero/listado-genero';
+// import ListadoPais from "../pais/listado-pais";
 
 
-
-export default function Usuario() {
-    const [usuarios, setUsuarios] = useState<any[]>([])
-    const [paises, setPaises] = useState<any[]>([])
-    const [generos, setGeneros] = useState<any[]>([])
+const ListadoUsuario = () => {
+    const [usuarios, setUsuarios] = useState([])
+    const [paises, setPaises] = useState([])
+    const [generos, setGeneros] = useState([])
 
     const obtenerUsuarios = () => {
         axios.get(`http://localhost:8000/usuarios`)
@@ -75,8 +73,8 @@ export default function Usuario() {
                         <td className='text-center'>{usuario.correo_electronico}</td>
                         <td className='text-center'>{usuario.fecha_nacimiento}</td>
                         <td className='text-center'>{usuario.contraseña}</td>
-                        <td className='text-center'>{generos.map((gen) => (usuario.genero_id == gen.genero_id ? gen.nombre_genero : null))}</td>
-                        <td className='text-center'>{paises.map((pais) => (usuario.pais_id == pais.pais_id ? pais.nombre_pais : null))}</td>
+                        <td className='text-center'>{generos.map((gen) => (usuario.genero_id === gen.genero_id ? gen.nombre_genero : null))}</td>
+                        <td className='text-center'>{paises.map((pais) => (usuario.pais_id === pais.pais_id ? pais.nombre_pais : null))}</td>
                     </tr>
                 ))}
             </tbody>
@@ -84,3 +82,6 @@ export default function Usuario() {
     </div>
     )
   }
+
+  
+export default ListadoUsuario;

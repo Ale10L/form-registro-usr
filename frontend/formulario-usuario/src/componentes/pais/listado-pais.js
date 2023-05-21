@@ -1,11 +1,9 @@
-"use client"
 import axios from 'axios'
 import React, { useEffect, useState} from 'react'
 
 
-
-export default function Pais() {
-    const [paises, setPaises] = useState<any[]>([])
+const ListadoPais = () => {
+    const [paises, setPaises] = useState([])
     
     const obtenerPaises = () => {
         axios.get(`http://localhost:8000/pais`)
@@ -42,3 +40,6 @@ export default function Pais() {
     </div>
     )
   }
+
+  
+export default ListadoPais;

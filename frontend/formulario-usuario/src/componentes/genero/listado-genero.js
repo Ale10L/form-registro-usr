@@ -1,11 +1,9 @@
-"use client"
 import axios from 'axios'
 import React, { useEffect, useState} from 'react'
 
 
-
-export default function Genero() {
-    const [generos, setGeneros] = useState<any[]>([])
+const ListadoGenero = () => {
+    const [generos, setGeneros] = useState([])
     
     const obtenerGeneros = () => {
         axios.get(`http://localhost:8000/genero`)
@@ -42,3 +40,6 @@ export default function Genero() {
     </div>
     )
   }
+
+  
+export default ListadoGenero
