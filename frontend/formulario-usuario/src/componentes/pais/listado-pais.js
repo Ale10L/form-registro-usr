@@ -31,8 +31,8 @@ const ListadoPais = () => {
             <tbody>
                 {paises.map((pais) => (
                     <tr key={pais.pais_id}>
-                        <td className='text-center'>{pais.pais_id}</td>
-                        <td className='text-center'>{pais.nombre_pais}</td>
+                        <td className='text-center text-white'>{pais.pais_id}</td>
+                        <td className='text-center text-white'>{pais.nombre_pais}</td>
                     </tr>
                 ))}
             </tbody>

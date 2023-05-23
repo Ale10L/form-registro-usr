@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import {  useParams, useNavigate } from "react-router-dom";
 
 const FormularioUsuario = () => {
   const [usuarios, setUsuarios] = useState({
+    usuario_id: 1,
     nombre_completo: "",
     fecha_nacimiento: "",
     correo_electronico: "",
@@ -13,6 +14,7 @@ const FormularioUsuario = () => {
   });
 
   const {
+    usuario_id,
     nombre_completo,
     fecha_nacimiento,
     correo_electronico,
@@ -60,7 +62,7 @@ const FormularioUsuario = () => {
     return btnAceptar
   }
 
-  console.log(camposCompletos)
+
 
   const [validaPass, setValidaPass] = useState({ confirmacion: '' })
   const { confirmacion } = validaPass
@@ -82,7 +84,7 @@ const FormularioUsuario = () => {
         [name]: value,
       })
     }
-    
+
     return contraseña === confirmacion ? true : false
   }
 
@@ -92,7 +94,7 @@ const FormularioUsuario = () => {
   const obtenerUsuarios = () => {
     console.log(usuarios)
     axios
-      .get(`http://localhost:8000/usuarios`)
+      .get(`http://localhost:3000/usuarios`)
       .then((response) => {
         setUsuarios(response.data);
       })
@@ -111,7 +113,7 @@ const FormularioUsuario = () => {
 
   const obtenerGeneros = () => {
     axios
-      .get(`http://localhost:8000/genero`)
+      .get(`http://localhost:3000/genero`)
       .then((response) => {
         setGeneros(response.data);
       })
@@ -128,7 +130,7 @@ const FormularioUsuario = () => {
 
   const obtenerPaises = () => {
     axios
-      .get(`http://localhost:8000/pais`)
+      .get(`http://localhost:3000/pais`)
       .then((response) => {
         setPaises(response.data);
       })
@@ -143,15 +145,14 @@ const FormularioUsuario = () => {
 
   const guardarUsuario = () => {
     console.log(usuarios);
-    axios
-      .post(`http://localhost:8000/usuarios/agregar-usuario/`, usuarios)
+      axios.post("http://localhost:3000/usuarios", usuarios)
       .then(() => {
-        alert("Se registro un nuevo usuario");
-        navigate('/')
+          alert("Se agregó el contacto correctamente")
+          navigate('/')
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch(() => {
+          alert("Hubo un error al agregar el contacto")
+      })
   };
 
 

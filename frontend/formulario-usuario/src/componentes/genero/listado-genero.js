@@ -31,8 +31,8 @@ const ListadoGenero = () => {
             <tbody>
                 {generos.map((gen) => (
                     <tr key={gen.genero_id}>
-                        <td className='text-center'>{gen.genero_id}</td>
-                        <td className='text-center'>{gen.nombre_genero}</td>
+                        <td className='text-center text-white'>{gen.genero_id}</td>
+                        <td className='text-center text-white'>{gen.nombre_genero}</td>
                     </tr>
                 ))}
             </tbody>

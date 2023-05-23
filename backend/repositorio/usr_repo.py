@@ -26,6 +26,18 @@ class UsrRepositorio:
         fecha_actual = datetime.now().date()
         fec_nac = datos.fecha_nacimiento.date()
         edad = relativedelta(fecha_actual, fec_nac)
+        if datos.nombre_completo == '':
+            raise HTTPException (status_code=406, detail='El campo nombre completo es obligatorio')
+        if datos.correo_electronico == '':
+            raise HTTPException (status_code=406, detail='El campo correo electrónico es obligatorio')
+        if datos.fecha_nacimiento == '':
+            raise HTTPException (status_code=406, detail='El campo fecha de nacimiento es obligatorio')
+        if datos.contraseña == '':
+            raise HTTPException (status_code=406, detail='El campo contraseña es obligatorio')
+        if datos.genero_id == '':
+            raise HTTPException (status_code=406, detail='El campo género es obligatorio')
+        if datos.pais_id == '':
+            raise HTTPException (status_code=406, detail='El campo país de residencia es obligatorio')
         if edad.years <= 17:
             raise HTTPException(status_code=406, detail='El usuario debe ser mayor de 18 años')
         if validar_correo is None:

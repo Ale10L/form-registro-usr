@@ -1,17 +1,20 @@
-
-.container {
+#root{
   background: #8E0E00;
   /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);
   /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #1F1C18, #8E0E00);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 
-  height: 400;
+.container {
+ 
+  height: 1200px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  
 }
 
 .titulo {
@@ -288,9 +291,13 @@
 .nombre_genero:focus~.barra::before {
   width: 100%;
 }
-
+/* 
 @media screen and (max-width: 500px){
   .form{
-    width: 80%;
+    width: 100%;
   }
+} */
+
+#btnVolver{
+  margin-bottom: 30px;
 }

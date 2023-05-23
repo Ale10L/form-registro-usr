@@ -13,7 +13,7 @@ const RouterComponent = () => {
                 
                 <nav className="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
                     <Link to='/usuarios' className="nav-link">Usuarios</Link>
-                    <Link to='/genero' className="nav-link">Géneros</Link>
+                    <Link to='/generos' className="nav-link">Géneros</Link>
                     <Link to='/pais' className="nav-link">Países</Link>
                 </nav>
             </div>
