@@ -291,6 +291,33 @@
 .nombre_genero:focus~.barra::before {
   width: 100%;
 }
+
+.nombre_pais {
+  background: none;
+  color: #c6c6c6;
+  font-size: 16px;
+  padding: 5px 5px 5px 2.5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid
+}
+
+.nombre_pais:focus {
+  outline: none;
+  color: #5e5d5d;
+}
+
+.nombre_pais:focus~label,
+.nombre_pais:valid~label {
+  top: -14px;
+  font-size: 12px;
+  color: #2196f3
+}
+
+.nombre_pais:focus~.barra::before {
+  width: 100%;
+}
 /* 
 @media screen and (max-width: 500px){
   .form{

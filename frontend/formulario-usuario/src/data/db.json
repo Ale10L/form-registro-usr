@@ -1,0 +1,38 @@
+{
+  "usuarios": [
+    {
+      "usuario_id": 1,
+      "nombre_completo": "Alejandro",
+      "fecha_nacimiento": "02/04/1991",
+      "correo_electronico": "alejandro_ghiringhelli@gmail.com",
+      "contraseña": "12345",
+      "genero_id": 1,
+      "pais_id": 1
+    }
+  ],
+  "genero": [
+    {
+        "genero_id": 1,
+        "nombre_genero": "Masculino"
+    },
+    {
+        "genero_id": 2,
+        "nombre_genero": "Femenino"
+    }
+    
+  ],
+  "pais": [
+    {
+        "pais_id": 1,
+        "nombre_pais": "México"
+    },
+    {
+        "pais_id": 2,
+        "nombre_pais": "Estados Unidos"
+    },
+    {
+        "pais_id": 3,
+        "nombre_pais": "Canadá"
+    }
+  ]
+}

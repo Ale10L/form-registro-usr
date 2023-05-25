@@ -6,7 +6,8 @@ const ListadoGenero = () => {
     const [generos, setGeneros] = useState([])
     
     const obtenerGeneros = () => {
-        axios.get(`http://localhost:8000/genero`)
+        //axios.get(`http://localhost:8000/genero`)
+        axios.get(`http://localhost:3030/genero`)
             .then((response) => {
                 setGeneros(response.data)
             })

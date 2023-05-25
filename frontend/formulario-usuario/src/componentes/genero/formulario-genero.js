@@ -51,9 +51,7 @@ const FormularioGenero = () => {
 
   return (
     <div className='form'>
-      <div className="row">
-        <button><a href="/">Volver</a></button>
-        
+      <div className="row">        
           <div className='form_group'>
             <input
               type="text"

@@ -1,42 +1,84 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FormularioUsuario = () => {
-  const [usuarios, setUsuarios] = useState({
+  const [usuarios, setUsuarios] = useState([])
+  const [usuario, setUsuario] = useState({
+    usuario_id: 0,
     nombre_completo: "",
     fecha_nacimiento: "",
     correo_electronico: "",
     contraseña: "",
-    genero_id: 1,
-    pais_id: 1,
+    genero_id: 0,
+    pais_id: 0,
   });
+  const [generos, setGeneros] = useState([]);
+  const [genero, setGenero] = useState({
+    genero_id: 0,
+    nombre_genero: ""
+  })
+  const [paises, setPaises] = useState([]);
+  const [pais, setPais] = useState({
+    pais_id: 0,
+    nombre_pais: ""
+  })
 
   const {
+    usuario_id,
     nombre_completo,
     fecha_nacimiento,
     correo_electronico,
     contraseña,
     genero_id,
     pais_id,
-  } = usuarios;
+  } = usuario;
+  const { nombre_genero } = genero
+  const { nombre_pais } = pais
 
+  const { idUsuario } = useParams()
+  const { idGenero } = useParams()
+  const { idPais } = useParams()
 
   const formularioCambio = (e) => {
     if (e.target) {
-      const { name, value } = e.target
+      const { name, value } = e.target;
+
+      if (name === "nombre_genero") {
+        setGenero({
+          ...genero,
+          nombre_genero: value,
+        });
+        setUsuario({
+          ...usuario,
+          genero_id: 0,
+        });
+      }
+
+      if (name === "nombre_pais") {
+        setPais({
+          ...pais,
+          nombre_pais: value,
+        });
+        setUsuario({
+          ...usuario,
+          pais_id: 0,
+        });
+      }
+
       if (name) {
-        setUsuarios({
-          ...usuarios,
+        setUsuario({
+          ...usuario,
           [name]: value,
         });
       }
+
       setCamposCompletos((prevState) => ({
         ...prevState,
         [name]: value !== "",
       }));
     } else {
-      console.error("Evento no válido")
+      console.error("Evento no válido");
     }
   };
 
@@ -49,18 +91,13 @@ const FormularioUsuario = () => {
   });
 
   const habilitarBtnAceptar = () => {
-
-    console.log("Repeticion contraseña: " + confirmacion + " - Contraseña: " + contraseña)
     let coinciden = contraseña === confirmacion ? true : false
-    console.log(coinciden)
     let btnAceptar = true
     if (camposCompletos.nombre_completo === true && camposCompletos.fecha_nacimiento === true && camposCompletos.correo_electronico === true && camposCompletos.contraseña === true && camposCompletos.confirmacion === true && coinciden === true) {
       btnAceptar = false
     }
     return btnAceptar
   }
-
-  console.log(camposCompletos)
 
   const [validaPass, setValidaPass] = useState({ confirmacion: '' })
   const { confirmacion } = validaPass
@@ -77,22 +114,54 @@ const FormularioUsuario = () => {
       })
     }
     if (name === 'contraseña') {
-      setUsuarios({
-        ...usuarios,
+      setUsuario({
+        ...usuario,
+        [name]: value,
+      })
+      setValidaPass({
+        ...validaPass,
         [name]: value,
       })
     }
-    
+
     return contraseña === confirmacion ? true : false
   }
 
-  const { idUsuario } = useParams();
+  const [mostrarOtroGenero, setMostrarOtroGenero] = useState(false);
+  const [mostrarOtroPais, setMostrarOtroPais] = useState(false);
+
+  const eventoInputOtro = (e) => {
+    const { name } = e.target;
+
+    if (name === "otro_genero") {
+      genero.genero_id = 0 // Reinicia el ID del género
+      setGenero({
+        ...genero,
+        genero_id: genero.length + 1,
+        nombre_genero: "",
+      });
+      setMostrarOtroGenero(true);
+      axios.post(`http://localhost:3030/genero`, genero).then(() => { })
+    }
+
+    if (name === "otro_pais") {
+      pais.pais_id = 0 // Reinicia el ID del país
+      setPais({
+        ...pais,
+        pais_id: 0,
+        nombre_pais: "",
+      });
+      axios.post(`http://localhost:3030/pais`, pais).then(() => { })
+      setMostrarOtroPais(true);
+    }
+  }
+
   const navigate = useNavigate();
 
   const obtenerUsuarios = () => {
-    console.log(usuarios)
-    axios
-      .get(`http://localhost:8000/usuarios`)
+
+    //axios.get(`http://localhost:8000/usuarios`)
+    axios.get(`http://localhost:3030/usuarios`)
       .then((response) => {
         setUsuarios(response.data);
       })
@@ -102,16 +171,17 @@ const FormularioUsuario = () => {
   };
 
   useEffect(() => {
-    if (idUsuario) {
-      obtenerUsuarios();
+    if (!idUsuario) {
+      obtenerUsuarios()
     }
-  }, [idUsuario]);
+  }, [idUsuario])
 
-  const [generos, setGeneros] = useState([]);
+  console.log(usuarios)
+  console.log("Cantidad de usuarios en db.json: " + usuarios.length)
 
   const obtenerGeneros = () => {
-    axios
-      .get(`http://localhost:8000/genero`)
+    //axios.get(`http://localhost:8000/genero`)
+    axios.get(`http://localhost:3030/genero`)
       .then((response) => {
         setGeneros(response.data);
       })
@@ -121,14 +191,14 @@ const FormularioUsuario = () => {
   };
 
   useEffect(() => {
-    obtenerGeneros();
-  }, []);
-
-  const [paises, setPaises] = useState([]);
+    if (!idGenero) {
+      obtenerGeneros();
+    }
+  }, [idGenero]);
 
   const obtenerPaises = () => {
-    axios
-      .get(`http://localhost:8000/pais`)
+    //axios.get(`http://localhost:8000/pais`)
+    axios.get(`http://localhost:3030/pais`)
       .then((response) => {
         setPaises(response.data);
       })
@@ -138,18 +208,66 @@ const FormularioUsuario = () => {
   };
 
   useEffect(() => {
-    obtenerPaises();
-  }, []);
+    if (!idPais) {
+      obtenerPaises();
+    }
+  }, [idPais]);
+
 
   const guardarUsuario = () => {
     console.log(usuarios);
-    axios
-      .post(`http://localhost:8000/usuarios/agregar-usuario/`, usuarios)
+    if (mostrarOtroGenero && nombre_genero !== "") {
+      const nuevoGeneroObj = {
+        genero_id: generos.length + 1, // Asigna un nuevo ID único
+        nombre_genero: nombre_genero,
+      };
+      setGeneros([...generos, nuevoGeneroObj]);
+    }
+
+    // Agregar el nuevo país a la lista de países
+    if (mostrarOtroPais && nombre_pais !== "") {
+      const nuevoPaisObj = {
+        pais_id: paises.length + 1, // Asigna un nuevo ID único
+        nombre_pais: nombre_pais,
+      };
+      setPaises([...paises, nuevoPaisObj]);
+    }
+    console.log("ID de usuario antes de setearlo")
+    console.log(usuario.usuario_id);
+    // setUsuario({
+    //   ...usuario,
+    //   usuario_id: usuarios.length + 1
+    // })
+
+
+    console.log("Cantidad de usuarios en db.json luego del seteo: " + usuarios.length)
+    usuario.usuario_id = usuarios.length + 1
+    console.log("Lista de usuarios luego del seteo: ")
+    console.log(usuarios)
+    console.log("Usuario luego del seteo: ")
+    console.log("ID: " + usuario.usuario_id);
+    console.log("NOMBRE COMPLETO: " + usuario.nombre_completo);
+    console.log("FECHA DE NACIMIENTO: " + usuario.fecha_nacimiento);
+    console.log("CORREO ELECTRONICO: " + usuario.correo_electronico);
+    console.log("CONTRASEÑA: " + usuario.contraseña);
+    console.log("GENERO ID: " + usuario.genero_id);
+    console.log("PAIS ID: " + usuario.pais_id);
+    setUsuario([...usuario, usuario])
+    //axios.post(`http://localhost:8000/usuarios/agregar-usuario/`, usuarios)
+    axios.post(`http://localhost:3030/usuarios`, usuario)
       .then(() => {
         alert("Se registro un nuevo usuario");
         navigate('/')
       })
       .catch((error) => {
+        console.log("ID: " + usuario.usuario_id);
+        console.log("NOMBRE COMPLETO: " + usuario.nombre_completo);
+        console.log("FECHA DE NACIMIENTO: " + usuario.fecha_nacimiento);
+        console.log("CORREO ELECTRONICO: " + usuario.correo_electronico);
+        console.log("CONTRASEÑA: " + usuario.contraseña);
+        console.log("GENERO ID: " + usuario.genero_id);
+        console.log("PAIS ID: " + usuario.pais_id);
+        console.log(usuario);
         alert(error);
       });
   };
@@ -231,14 +349,27 @@ const FormularioUsuario = () => {
           <select
             className='genero'
             required
+            name='genero_id'
+            value={usuario.genero_id}
+            onChange={(e) => { formularioCambio(e); eventoInputOtro(e) }}
           >
             {generos.map((gen) => (
               <option key={gen.genero_id}
-                name='genero_id'
-                value={genero_id}
-                onChange={(e) => formularioCambio(e)}>{gen.genero_id} - {gen.nombre_genero}</option>
+                value={gen.genero_id}
+              >{gen.genero_id} - {gen.nombre_genero}</option>
             ))}
+            <option value="otro_genero">Otro</option>
           </select>
+          {mostrarOtroGenero && (
+            <input
+              type="text"
+              className="nombre_genero"
+              name="nombre_genero"
+              value={genero.nombre_genero}
+              onChange={(e) => { formularioCambio(e); eventoInputOtro(e) }}
+            />
+          )}
+
           <label className='label'>Género</label>
           <span className='barra'></span>
         </div>
@@ -246,14 +377,25 @@ const FormularioUsuario = () => {
           <select
             className='pais'
             required
+            name='pais_id'
+            value={usuario.pais_id}
+            onChange={(e) => formularioCambio(e)}
           >
             {paises.map((pais) => (
-              <option key={pais.pais_id}
-                name='pais_id'
-                value={pais_id}
-                onChange={(e) => formularioCambio(e)}>{pais.pais_id} - {pais.nombre_pais}</option>
+              <option key={pais.pais_id} value={pais.pais_id}
+              >{pais.pais_id} - {pais.nombre_pais}</option>
             ))}
+            <option value="otro_pais">Otro</option>
           </select>
+          {mostrarOtroPais && (
+            <input
+              type="text"
+              className="nombre_pais"
+              name="nombre_pais"
+              value={pais.nombre_pais}
+              onChange={(e) => formularioCambio(e)}
+            />
+          )}
           <label className='label'>País de residencia</label>
           <span className='barra'></span>
         </div>
