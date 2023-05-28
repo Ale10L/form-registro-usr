@@ -6,8 +6,8 @@ const ListadoPais = () => {
     const [paises, setPaises] = useState([])
     
     const obtenerPaises = () => {
-        //axios.get(`http://localhost:8000/pais`)
-        axios.get(`http://localhost:3030/pais`)
+        axios.get(`http://localhost:8000/pais`)
+        //axios.get(`http://localhost:3030/pais`)
             .then((response) => {
                 setPaises(response.data)
             })

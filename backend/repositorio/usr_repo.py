@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 
 class UsrRepositorio:
     def lista_usr(self, session: Session):
-        usr = session.query(UsrBd).join(GeneroBd).filter(UsrBd.genero_id == GeneroBd.genero_id).join(PaisBd).filter(PaisBd.pais_id == UsrBd.pais_id).all()
+        usr = session.query(UsrBd).join(GeneroBd).filter(UsrBd.genero_id == GeneroBd.genero_id).join(PaisBd).filter(PaisBd.pais_id == UsrBd.pais_id).order_by(UsrBd.usuario_id).all()
         #return session.execute(select(UsrBd)).scalars().all()
         return usr
     

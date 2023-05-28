@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 
-const ListadoUsuario = () => {
+const ListadoUsuarioLocal = () => {
     const [usuarios, setUsuarios] = useState([])
     const [generos, setGeneros] = useState([])
     const [paises, setPaises] = useState([])
     const obtenerUsuarios = () => {
-        axios.get(`http://localhost:8000/usuarios`)
-        //axios.get(`http://localhost:3030/usuarios`)
+        //axios.get(`http://localhost:8000/usuarios`)
+        axios.get(`http://localhost:3030/usuarios`)
             .then((response) => {
                 setUsuarios(response.data)
             })
@@ -18,8 +18,8 @@ const ListadoUsuario = () => {
             })
     }
     const obtenerGeneros = () => {
-        axios.get(`http://localhost:8000/genero`)
-        //axios.get(`http://localhost:3030/genero`)
+        //axios.get(`http://localhost:8000/genero`)
+        axios.get(`http://localhost:3030/genero`)
             .then((response) => {
                 setGeneros(response.data)
             })
@@ -28,8 +28,8 @@ const ListadoUsuario = () => {
             })
     }
     const obtenerPaises = () => {
-        axios.get(`http://localhost:8000/pais`)
-        //axios.get(`http://localhost:3030/pais`)
+        //axios.get(`http://localhost:8000/pais`)
+        axios.get(`http://localhost:3030/pais`)
             .then((response) => {
                 setPaises(response.data)
             })
@@ -78,4 +78,4 @@ const ListadoUsuario = () => {
 }
 
 
-export default ListadoUsuario;
+export default ListadoUsuarioLocal;

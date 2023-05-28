@@ -5,6 +5,8 @@ import FormularioUsuario from './componentes/usuario/formulario-usuario';
 import FormularioGenero from './componentes/genero/formulario-genero';
 import ListadoGenero from './componentes/genero/listado-genero';
 import ListadoPais from './componentes/pais/listado-pais';
+import FormularioUsuarioLocal from './componentes/usuario/formulario-usuario-local';
+import ListadoUsuarioLocal from './componentes/usuario/listado-usuario-local';
 
 const RouterComponent = () => {
     return (
@@ -23,10 +25,12 @@ const RouterComponent = () => {
                     <Route path='/usuarios' exact element={<ListadoUsuario/>} />
                     <Route path='/generos' exact element={<ListadoGenero/>} />
                     <Route path='/pais' exact element={<ListadoPais/>} />
+                    <Route path='/usuarios-local' exact element={<ListadoUsuarioLocal/>} />
 
                     {/* FORMULARIOS  */}
                     <Route path='/' exact element={<FormularioUsuario/>} />
                     <Route path='/usuarios/agregar-usuario' exact element={<FormularioUsuario/>} />
+                    <Route path='/usuarios/agregar-usuario-local' exact element={<FormularioUsuarioLocal/>} />
                     <Route path='/genero/agregar-genero' exact element={<FormularioGenero/>}/>
                 </Routes>
             </div>

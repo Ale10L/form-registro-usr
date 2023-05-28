@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const FormularioUsuario = () => {
+const FormularioUsuarioLocal = () => {
   const [usuarios, setUsuarios] = useState([])
   const [usuario, setUsuario] = useState({
     nombre_completo: "",
@@ -14,10 +14,12 @@ const FormularioUsuario = () => {
   });
   const [generos, setGeneros] = useState([]);
   const [genero, setGenero] = useState({
+    genero_id: 0,
     nombre_genero: ""
   })
   const [paises, setPaises] = useState([]);
   const [pais, setPais] = useState({
+    pais_id: 0,
     nombre_pais: ""
   })
 
@@ -30,9 +32,6 @@ const FormularioUsuario = () => {
     pais_id,
   } = usuario;
 
-  const { nombre_genero } = genero;
-  const { nombre_pais } = pais;
-
   const { idUsuario } = useParams()
   const { idGenero } = useParams()
   const { idPais } = useParams()
@@ -40,39 +39,34 @@ const FormularioUsuario = () => {
   const formularioCambio = (e) => {
     if (e.target) {
       const { name, value } = e.target;
+
+      if (name === "nombre_genero") {
+        setGenero({
+          ...genero,
+          nombre_genero: value,
+        });
+        setUsuario({
+          ...usuario,
+          genero_id: 0,
+        });
+      }
+
+      if (name === "nombre_pais") {
+        setPais({
+          ...pais,
+          nombre_pais: value,
+        });
+        setUsuario({
+          ...usuario,
+          pais_id: 0,
+        });
+      }
+
       if (name) {
         setUsuario({
           ...usuario,
           [name]: value,
         });
-        if (name === "nombre_genero" || name === "nuevo_genero") {
-          setGenero({
-            ...genero,
-            nombre_genero: value,
-          });
-          setUsuario({
-            ...usuario,
-            genero_id: generos.length + 1,
-          });
-          console.log("ID género del usuario: " + usuario.genero_id)
-        }
-
-        if (name === "nombre_pais" || name === "nuevo_pais") {
-          setPais({
-            ...pais,
-            nombre_pais: value,
-          });
-          setUsuario({
-            ...usuario,
-            pais_id: paises.length + 1,
-          });
-          console.log("ID país del usuario: " + usuario.pais_id)
-        }
-
-        console.log(genero)
-        console.log(pais)
-        console.log("ID género del usuario: " + usuario.genero_id)
-        console.log("ID país del usuario: " + usuario.pais_id)
       }
 
       setCamposCompletos((prevState) => ({
@@ -101,25 +95,9 @@ const FormularioUsuario = () => {
     return btnAceptar
   }
 
-  const habilitarInputOtro = (e) => {
-    const { name, value } = e.target;
-    if (name === "genero_id" && value === "otro_genero") {
-      setHabilitarOtroGenero(true);
-    } else {
-      setHabilitarOtroGenero(false);
-    }
-
-    if (name === "pais_id" && value === "otro_pais") {
-      setHabilitarOtroPais(true);
-    } else {
-      setHabilitarOtroPais(false);
-    }
-  }
-
   const [validaPass, setValidaPass] = useState({ confirmacion: '' })
   const { confirmacion } = validaPass
-  const [habilitarOtroGenero, setHabilitarOtroGenero] = useState(false);
-  const [habilitarOtroPais, setHabilitarOtroPais] = useState(false);
+
 
   const eventoContraseña = (e) => {
     const { name, value } = e.target
@@ -148,7 +126,7 @@ const FormularioUsuario = () => {
   const navigate = useNavigate();
 
   const obtenerUsuarios = () => {
-    axios.get(`http://localhost:8000/usuarios`)
+    axios.get(`http://localhost:3030/usuarios`)
       .then((response) => {
         setUsuarios(response.data);
       })
@@ -164,7 +142,7 @@ const FormularioUsuario = () => {
   }, [idUsuario])
 
   const obtenerGeneros = () => {
-    axios.get(`http://localhost:8000/genero`)
+    axios.get(`http://localhost:3030/genero`)
       .then((response) => {
         setGeneros(response.data);
       })
@@ -180,7 +158,7 @@ const FormularioUsuario = () => {
   }, [idGenero]);
 
   const obtenerPaises = () => {
-    axios.get(`http://localhost:8000/pais`)
+    axios.get(`http://localhost:3030/pais`)
       .then((response) => {
         setPaises(response.data);
       })
@@ -197,32 +175,10 @@ const FormularioUsuario = () => {
 
 
   const guardarUsuario = () => {
-    console.log(genero)
-    console.log(pais)
     console.log(usuario)
-    if (genero) {
-      axios.post(`http://localhost:8000/genero`, genero)
-        .then(() => {
-          alert("Se registró un nuevo género")
-          obtenerGeneros();
-        })
-        .catch((error) => {
-          alert(error);
-        })
-    }
-    if (pais) {
-      axios.post(`http://localhost:8000/pais`, pais)
-        .then(() => {
-          alert("Se registró un nuevo país")
-          obtenerPaises();
-        })
-        .catch((error) => {
-          alert(error);
-        })
-    }
-    axios.post(`http://localhost:8000/usuarios/agregar-usuario`, usuario)
+    axios.post(`http://localhost:3030/usuarios`, usuario)
       .then(() => {
-        alert("Se registró un nuevo usuario");
+        alert("Se registro un nuevo usuario");
         navigate('/')
       })
       .catch((error) => {
@@ -307,7 +263,7 @@ const FormularioUsuario = () => {
             required
             name='genero_id'
             value={usuario.genero_id}
-            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            onChange={(e) => { formularioCambio(e);}}
           >
             {generos.map((gen) => (
               <option key={gen.genero_id}
@@ -315,15 +271,7 @@ const FormularioUsuario = () => {
               >{gen.genero_id} - {gen.nombre_genero}</option>
             ))}
             <option value="otro_genero">Otro</option>
-
           </select>
-          <input
-            hidden={!habilitarOtroGenero}
-            placeholder="Ingrese otro género"
-            name="nuevo_genero"
-            value={nombre_genero}
-            onChange={(e) => formularioCambio(e)}
-          />
           <label className='label'>Género</label>
           <span className='barra'></span>
         </div>
@@ -333,7 +281,7 @@ const FormularioUsuario = () => {
             required
             name='pais_id'
             value={usuario.pais_id}
-            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            onChange={(e) => formularioCambio(e)}
           >
             {paises.map((pais) => (
               <option key={pais.pais_id} value={pais.pais_id}
@@ -341,13 +289,6 @@ const FormularioUsuario = () => {
             ))}
             <option value="otro_pais">Otro</option>
           </select>
-          <input
-            hidden={!habilitarOtroPais}
-            placeholder="Ingrese otro país"
-            name="nuevo_pais"
-            value={nombre_pais}
-            onChange={(e) => formularioCambio(e)}
-          />
           <label className='label'>País de residencia</label>
           <span className='barra'></span>
         </div>
@@ -363,4 +304,4 @@ const FormularioUsuario = () => {
 }
 
 
-export default FormularioUsuario;
+export default FormularioUsuarioLocal;
