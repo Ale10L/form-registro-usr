@@ -8,8 +8,7 @@ const ListadoUsuarioLocal = () => {
     const [generos, setGeneros] = useState([])
     const [paises, setPaises] = useState([])
     const obtenerUsuarios = () => {
-        //axios.get(`http://localhost:8000/usuarios`)
-        axios.get(`http://localhost:3030/usuarios`)
+        axios.get(`http://localhost:3030/usuarios-local`)
             .then((response) => {
                 setUsuarios(response.data)
             })
@@ -18,8 +17,7 @@ const ListadoUsuarioLocal = () => {
             })
     }
     const obtenerGeneros = () => {
-        //axios.get(`http://localhost:8000/genero`)
-        axios.get(`http://localhost:3030/genero`)
+        axios.get(`http://localhost:3030/generos-local`)
             .then((response) => {
                 setGeneros(response.data)
             })
@@ -28,8 +26,7 @@ const ListadoUsuarioLocal = () => {
             })
     }
     const obtenerPaises = () => {
-        //axios.get(`http://localhost:8000/pais`)
-        axios.get(`http://localhost:3030/pais`)
+        axios.get(`http://localhost:3030/pais-local`)
             .then((response) => {
                 setPaises(response.data)
             })
@@ -50,7 +47,7 @@ const ListadoUsuarioLocal = () => {
 
     return (
         <div className='row'>
-            <div><button className='btn btn-warning' id='btnVolver'><Link to='/'className='text-black'>Volver</Link></button></div>
+            <div><button className='btn btn-warning' id='btnVolver'><Link to='/usuarios/agregar-usuario-local'className='text-black'>Volver</Link></button></div>
             <table className='table table-striped table-hover'>
                 <thead className='table-dark'>
                     <tr>

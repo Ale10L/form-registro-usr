@@ -1,5 +1,5 @@
 {
-  "usuarios": [
+  "usuarios-local": [
     {
       "usuario_id": 1,
       "nombre_completo": "Alejandro",
@@ -10,7 +10,7 @@
       "pais_id": 1
     }
   ],
-  "genero": [
+  "generos-local": [
     {
         "genero_id": 1,
         "nombre_genero": "Masculino"
@@ -21,7 +21,7 @@
     }
     
   ],
-  "pais": [
+  "pais-local": [
     {
         "pais_id": 1,
         "nombre_pais": "México"
