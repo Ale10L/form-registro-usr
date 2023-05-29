@@ -1,82 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FormularioUsuarioLocal = () => {
   const [usuarios, setUsuarios] = useState([])
-  const [usuario, setUsuario] = useState({
-    nombre_completo: "",
-    fecha_nacimiento: "",
-    correo_electronico: "",
-    contraseña: "",
-    genero_id: 0,
-    pais_id: 0,
-  });
+  const usuario_id = useRef()
+  const nombre_completo = useRef()
+  const fecha_nacimiento = useRef()
+  const correo_electronico = useRef()
+  const contraseña = useRef()
+  const genero_id = useRef()
+  const pais_id = useRef()
   const [generos, setGeneros] = useState([]);
-  const [genero, setGenero] = useState({
-    genero_id: 0,
-    nombre_genero: ""
-  })
+  const nombre_genero = useRef()
   const [paises, setPaises] = useState([]);
-  const [pais, setPais] = useState({
-    pais_id: 0,
-    nombre_pais: ""
-  })
-
-  const {
-    nombre_completo,
-    fecha_nacimiento,
-    correo_electronico,
-    contraseña,
-    genero_id,
-    pais_id,
-  } = usuario;
+  const nombre_pais = useRef()
 
   const { idUsuario } = useParams()
   const { idGenero } = useParams()
   const { idPais } = useParams()
-
-  const formularioCambio = (e) => {
-    if (e.target) {
-      const { name, value } = e.target;
-
-      if (name === "nombre_genero") {
-        setGenero({
-          ...genero,
-          nombre_genero: value,
-        });
-        setUsuario({
-          ...usuario,
-          genero_id: 0,
-        });
-      }
-
-      if (name === "nombre_pais") {
-        setPais({
-          ...pais,
-          nombre_pais: value,
-        });
-        setUsuario({
-          ...usuario,
-          pais_id: 0,
-        });
-      }
-
-      if (name) {
-        setUsuario({
-          ...usuario,
-          [name]: value,
-        });
-      }
-
-      setCamposCompletos((prevState) => ({
-        ...prevState,
-        [name]: value !== "",
-      }));
-    } else {
-      console.error("Evento no válido");
-    }
-  };
 
   const [camposCompletos, setCamposCompletos] = useState({
     nombre_completo: false,
@@ -86,6 +28,25 @@ const FormularioUsuarioLocal = () => {
     confirmacion: false,
   });
 
+  const [validaPass, setValidaPass] = useState({ confirmacion: '' })
+  const { confirmacion } = validaPass
+  const navigate = useNavigate();
+
+  const formularioCambio = (e) => {
+
+    if (e.target) {
+      const { name, value } = e.target;
+      
+      setCamposCompletos((prevState) => ({
+        ...prevState,
+        [name]: value !== "",
+      }));
+
+    } else {
+      console.error("Evento no válido");
+    }
+  };
+
   const habilitarBtnAceptar = () => {
     let coinciden = contraseña === confirmacion ? true : false
     let btnAceptar = true
@@ -94,10 +55,6 @@ const FormularioUsuarioLocal = () => {
     }
     return btnAceptar
   }
-
-  const [validaPass, setValidaPass] = useState({ confirmacion: '' })
-  const { confirmacion } = validaPass
-
 
   const eventoContraseña = (e) => {
     const { name, value } = e.target
@@ -110,10 +67,6 @@ const FormularioUsuarioLocal = () => {
       })
     }
     if (name === 'contraseña') {
-      setUsuario({
-        ...usuario,
-        [name]: value,
-      })
       setValidaPass({
         ...validaPass,
         [name]: value,
@@ -123,7 +76,7 @@ const FormularioUsuarioLocal = () => {
     return contraseña === confirmacion ? true : false
   }
 
-  const navigate = useNavigate();
+  
 
   const obtenerUsuarios = () => {
     axios.get(`http://localhost:3030/usuarios`)
@@ -173,8 +126,9 @@ const FormularioUsuarioLocal = () => {
     }
   }, [idPais]);
 
-
+  const [usuario, setUsuario] = useState([''])
   const guardarUsuario = () => {
+    setUsuario(usuario_id,nombre_completo,fecha_nacimiento,correo_electronico,contraseña,genero_id,pais_id)
     console.log(usuario)
     axios.post(`http://localhost:3030/usuarios`, usuario)
       .then(() => {
