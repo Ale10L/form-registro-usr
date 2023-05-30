@@ -4,19 +4,21 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const FormularioUsuarioLocal = () => {
   const [usuarios, setUsuarios] = useState([])
-  const [usuario, setUsuario] = useState([])
-  const usuarioId = useRef()
-  const nombreCompleto = useRef()
-  const fechaNacimiento = useRef()
-  const correoElectronico = useRef()
-  const pass = useRef()
-  const generoId = useRef()
-  const paisId = useRef()
+  const [usuario, setUsuario] = useState({
+    usuario_id: 0,
+    nombre_completo: '',
+    fecha_nacimiento: '',
+    correo_electronico: '',
+    contraseña: '',
+    genero_id: 0,
+    pais_id: 0
+  })
   const [generos, setGeneros] = useState([]);
-  const nombre_genero = useRef()
+  const [genero, setGenero] = useState({ nombre_genero: '' })
   const [paises, setPaises] = useState([]);
-  const nombre_pais = useRef()
+  const [pais, setPais] = useState({ nombre_pais: '' })
 
+  const { nombre_completo, correo_electronico, contraseña, fecha_nacimiento, genero_id, pais_id } = usuario
   const { idUsuario } = useParams()
   const { idGenero } = useParams()
   const { idPais } = useParams()
@@ -36,17 +38,10 @@ const FormularioUsuarioLocal = () => {
   const formularioCambio = (e) => {
     if (e.target) {
       const { name, value } = e.target;
-      const user = {
-        usuario_id: usuarioId.current.value,
-        nombre_completo: nombreCompleto.current.value,
-        fecha_nacimiento: fechaNacimiento.current.value,
-        correo_electronico: correoElectronico.current.value,
-        contraseña: pass.current.value,
-        genero_id: generoId.current.value,
-        pais_id: paisId.current.value
-      }
-      console.log(user)
-      setUsuario(user)
+      setUsuario({
+        ...usuario,
+        [name]: value
+      })
       console.log(usuario)
       setCamposCompletos((prevState) => ({
         ...prevState,
@@ -59,7 +54,7 @@ const FormularioUsuarioLocal = () => {
   };
 
   const habilitarBtnAceptar = () => {
-    let coinciden = pass.current.value === confirmacion ? true : false
+    let coinciden = contraseña === confirmacion ? true : false
     let btnAceptar = true
     if (camposCompletos.nombre_completo === true && camposCompletos.fecha_nacimiento === true && camposCompletos.correo_electronico === true && camposCompletos.contraseña === true && camposCompletos.confirmacion === true && coinciden === true) {
       btnAceptar = false
@@ -84,8 +79,8 @@ const FormularioUsuarioLocal = () => {
       })
     }
 
-    return pass.current.value === confirmacion ? true : false
-  }  
+    return contraseña.current.value === confirmacion ? true : false
+  }
 
   const obtenerUsuarios = () => {
     axios.get(`http://localhost:3030/usuarios-local`)
@@ -98,20 +93,6 @@ const FormularioUsuarioLocal = () => {
   };
 
   useEffect(() => {
-    if(idUsuario) {
-      axios.get(`http://localhost:3030/usuarios/${idUsuario}`)
-      .then((response) => {
-          const user = response.data;
-
-          usuarioId.current.value = user.usuario_id;
-          nombreCompleto.current.value = user.nombre_completo;
-          fechaNacimiento.current.value = user.fecha_nacimiento;
-          correoElectronico.current.value = user.correo_electronico;
-          pass.current.value = user.contraseña;
-          generoId.current.value = user.genero_id;
-          paisId.current.value = user.pais_id;
-      })
-  }
     if (!idUsuario) {
       obtenerUsuarios()
     }
@@ -148,7 +129,7 @@ const FormularioUsuarioLocal = () => {
       obtenerPaises();
     }
   }, [idPais]);
-  
+
   const guardarUsuario = () => {
     //usuarioId = usuarios.length + 1
     //console.log("ID de usuario a asignar: " + usuario_id)
@@ -178,9 +159,8 @@ const FormularioUsuarioLocal = () => {
             type="text"
             className='nombre_completo'
             name='nombre_completo'
-            ref={nombreCompleto}
             id='nombre_completo'
-            value={usuario.nombre_completo}
+            value={nombre_completo}
             required
             onChange={(e) => formularioCambio(e)}
           />
@@ -193,7 +173,6 @@ const FormularioUsuarioLocal = () => {
             type="datetime-local"
             className='fecha_nacimiento'
             name='fecha_nacimiento'
-            ref={fechaNacimiento}
             value={usuario.fecha_nacimiento}
             onChange={(e) => formularioCambio(e)}
             required
@@ -207,7 +186,6 @@ const FormularioUsuarioLocal = () => {
             type="text"
             className='correo_electronico'
             name='correo_electronico'
-            ref={correoElectronico}
             value={usuario.correo_electronico}
             onChange={(e) => formularioCambio(e)}
             required
@@ -222,7 +200,6 @@ const FormularioUsuarioLocal = () => {
               type="password"
               className='contraseña'
               name='contraseña'
-              ref={pass}
               value={usuario.contraseña}
               onChange={(e) => { formularioCambio(e); eventoContraseña(e) }}
               required
@@ -250,9 +227,8 @@ const FormularioUsuarioLocal = () => {
             className='genero'
             required
             name='genero_id'
-            ref={generoId}
             value={usuario.genero_id}
-            onChange={(e) => { formularioCambio(e);}}
+            onChange={(e) => { formularioCambio(e); }}
           >
             {generos.map((gen) => (
               <option key={gen.genero_id}
@@ -269,7 +245,6 @@ const FormularioUsuarioLocal = () => {
             className='pais'
             required
             name='pais_id'
-            ref={paisId}
             value={usuario.pais_id}
             onChange={(e) => formularioCambio(e)}
           >
@@ -283,7 +258,7 @@ const FormularioUsuarioLocal = () => {
           <span className='barra'></span>
         </div>
         <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-          <button className="btn btn-primary" onClick={guardarUsuario}  id='btnAceptar'>
+          <button className="btn btn-primary" onClick={guardarUsuario} id='btnAceptar'>
             Agregar
           </button>
           <button className="btn btn-danger">Cancelar</button>
