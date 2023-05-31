@@ -60,12 +60,12 @@ const ListadoUsuarioLocal = () => {
                 </thead>
                 <tbody>
                     {usuarios.map((usuario) => (
-                        <tr key={usuario.usuario_id}>
-                            <td className='text-center text-white'>{usuario.usuario_id}</td>
+                        <tr key={usuario.id}>
+                            <td className='text-center text-white'>{usuario.id}</td>
                             <td className='text-center text-white'>{usuario.nombre_completo}</td>
                             <td className='text-center text-white'>{usuario.correo_electronico}</td>
-                            <td className='text-center text-white'>{generos.map((gen) => (gen.genero_id === usuario.genero_id ? gen.nombre_genero : ''))}</td>
-                            <td className='text-center text-white'>{paises.map((pais) => (pais.pais_id === usuario.pais_id ? pais.nombre_pais : ''))}</td>
+                            <td className='text-center text-white'>{generos.map((gen) => (gen.id === usuario.genero_id ? gen.nombre_genero : ''))}</td>
+                            <td className='text-center text-white'>{paises.map((pais) => (pais.id === usuario.pais_id ? pais.nombre_pais : ''))}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -31,8 +31,8 @@ const ListadoGeneroLocal = () => {
             </thead>
             <tbody>
                 {generos.map((gen) => (
-                    <tr key={gen.genero_id}>
-                        <td className='text-center text-white'>{gen.genero_id}</td>
+                    <tr key={gen.id}>
+                        <td className='text-center text-white'>{gen.id}</td>
                         <td className='text-center text-white'>{gen.nombre_genero}</td>
                     </tr>
                 ))}

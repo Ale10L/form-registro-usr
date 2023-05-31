@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FormularioUsuarioLocal = () => {
   const [usuarios, setUsuarios] = useState([])
   const [usuario, setUsuario] = useState({
-    usuario_id: 0,
+    id: 0,
     nombre_completo: '',
     fecha_nacimiento: '',
     correo_electronico: '',
@@ -17,8 +17,13 @@ const FormularioUsuarioLocal = () => {
   const [genero, setGenero] = useState({ nombre_genero: '' })
   const [paises, setPaises] = useState([]);
   const [pais, setPais] = useState({ nombre_pais: '' })
+  const [habilitarOtroGenero, setHabilitarOtroGenero] = useState(false);
+  const [habilitarOtroPais, setHabilitarOtroPais] = useState(false);
 
   const { nombre_completo, correo_electronico, contraseña, fecha_nacimiento, genero_id, pais_id } = usuario
+  const { nombre_genero } = genero
+  const { nombre_pais } = pais
+
   const { idUsuario } = useParams()
   const { idGenero } = useParams()
   const { idPais } = useParams()
@@ -38,11 +43,27 @@ const FormularioUsuarioLocal = () => {
   const formularioCambio = (e) => {
     if (e.target) {
       const { name, value } = e.target;
-      setUsuario({
-        ...usuario,
-        [name]: value
-      })
-      console.log(usuario)
+      if (name !== 'confirmacion') {
+        console.log(name + ": " + value)
+        setUsuario({
+          ...usuario,
+          [name]: value
+        })
+      }
+      if (name === "nuevo_genero") {
+        setGenero({
+          ...genero,
+          nombre_genero: value,
+        });
+      }
+
+      if (name === "nuevo_pais") {
+        setPais({
+          ...pais,
+          nombre_pais: value,
+        });
+      }
+
       setCamposCompletos((prevState) => ({
         ...prevState,
         [name]: value !== "",
@@ -64,7 +85,6 @@ const FormularioUsuarioLocal = () => {
 
   const eventoContraseña = (e) => {
     const { name, value } = e.target
-    console.log(name)
 
     if (name === 'confirmacion') {
       setValidaPass({
@@ -79,7 +99,22 @@ const FormularioUsuarioLocal = () => {
       })
     }
 
-    return contraseña.current.value === confirmacion ? true : false
+    return contraseña === confirmacion ? true : false
+  }
+
+  const habilitarInputOtro = (e) => {
+    const { name, value } = e.target;
+    if (name === "genero_id" && value === "otro_genero") {
+      setHabilitarOtroGenero(true);
+    } else {
+      setHabilitarOtroGenero(false);
+    }
+
+    if (name === "pais_id" && value === "otro_pais") {
+      setHabilitarOtroPais(true);
+    } else {
+      setHabilitarOtroPais(false);
+    }
   }
 
   const obtenerUsuarios = () => {
@@ -131,16 +166,34 @@ const FormularioUsuarioLocal = () => {
   }, [idPais]);
 
   const guardarUsuario = () => {
-    //usuarioId = usuarios.length + 1
-    //console.log("ID de usuario a asignar: " + usuario_id)
-    //setUsuario((user) => ({...user,[usuario_id]: usuario_id}))
-    console.log("Usuario ID: " + usuario.usuario_id)
-    console.log("Nombre completo: " + usuario.nombre_completo)
-    console.log("Fecha de nacimiento: " + usuario.fecha_nacimiento)
-    console.log("Correo electrónico: " + usuario.correo_electronico)
-    console.log("Contraseña: " + usuario.contraseña)
-    console.log("Género ID: " + usuario.genero_id)
-    console.log("País ID: " + usuario.pais_id)
+    if (genero.nombre_genero !== "") {
+      axios.post(`http://localhost:3030/generos-local`, genero)
+        .then(() => {
+          alert("Se registró un nuevo género")
+        })
+        .catch((error) => {
+          alert(error);
+        })
+      }
+      
+      if (pais.nombre_pais !== "") {
+        axios.post(`http://localhost:3030/pais-local`, pais)
+        .then(() => {
+          alert("Se registró un nuevo país")
+        })
+        .catch((error) => {
+          alert(error);
+        })
+    }
+    
+    if(usuario.genero_id === "otro_genero"){
+      usuario.genero_id = generos.length + 1
+    }
+    if(usuario.pais_id === "otro_pais"){
+      usuario.pais_id = paises.length + 1
+    }
+    usuario.genero_id = parseInt(usuario.genero_id)
+    usuario.pais_id = parseInt(usuario.pais_id)
     axios.post(`http://localhost:3030/usuarios-local`, usuario)
       .then(() => {
         alert("Se registro un nuevo usuario");
@@ -159,7 +212,6 @@ const FormularioUsuarioLocal = () => {
             type="text"
             className='nombre_completo'
             name='nombre_completo'
-            id='nombre_completo'
             value={nombre_completo}
             required
             onChange={(e) => formularioCambio(e)}
@@ -203,10 +255,11 @@ const FormularioUsuarioLocal = () => {
               value={usuario.contraseña}
               onChange={(e) => { formularioCambio(e); eventoContraseña(e) }}
               required
-              id='contraseña' />
+            />
             <label className='label'>Contraseña</label>
             <label className='text-white' hidden={camposCompletos.contraseña}>El campo contraseña es obligatorio</label>
             <span className='barra'></span>
+            {/* <label className='text-white' hidden={(e) => {eventoContraseña(e)}}>Las contraseñas deben coincidir</label> */}
           </div>
           <div className='form_group'>
             <input
@@ -215,28 +268,35 @@ const FormularioUsuarioLocal = () => {
               value={confirmacion}
               name='confirmacion'
               required onChange={(e) => { formularioCambio(e); eventoContraseña(e) }}
-              id='confirmacion' />
+            />
             <label className='label'>Confirmar contraseña</label>
             <label className='text-white' hidden={camposCompletos.confirmacion}>El campo confirmar contraseña es obligatorio</label>
             <span className='barra'></span>
           </div>
-          <label className='text-white' hidden={camposCompletos.contraseña === camposCompletos.confirmacion ? true : false}>Las contraseñas deben coincidir</label>
+          <label className='text-white' hidden={contraseña === confirmacion ? true : false}>Las contraseñas deben coincidir</label>
         </div>
         <div className='form_group'>
           <select
             className='genero'
             required
             name='genero_id'
-            value={usuario.genero_id}
-            onChange={(e) => { formularioCambio(e); }}
+            //value={usuario.genero_id}
+            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
           >
             {generos.map((gen) => (
-              <option key={gen.genero_id}
-                value={gen.genero_id}
-              >{gen.genero_id} - {gen.nombre_genero}</option>
+              <option key={gen.id}
+                value={gen.id}
+              >{gen.id} - {gen.nombre_genero}</option>
             ))}
             <option value="otro_genero">Otro</option>
           </select>
+          <input
+            hidden={!habilitarOtroGenero}
+            placeholder="Ingrese otro género"
+            name="nuevo_genero"
+            value={nombre_genero}
+            onChange={(e) => formularioCambio(e)}
+          />
           <label className='label'>Género</label>
           <span className='barra'></span>
         </div>
@@ -245,20 +305,27 @@ const FormularioUsuarioLocal = () => {
             className='pais'
             required
             name='pais_id'
-            value={usuario.pais_id}
-            onChange={(e) => formularioCambio(e)}
+            //value={usuario.pais_id}
+            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
           >
             {paises.map((pais) => (
-              <option key={pais.pais_id} value={pais.pais_id}
-              >{pais.pais_id} - {pais.nombre_pais}</option>
+              <option key={pais.id} value={pais.id}
+              >{pais.id} - {pais.nombre_pais}</option>
             ))}
             <option value="otro_pais">Otro</option>
           </select>
+          <input
+            hidden={!habilitarOtroPais}
+            placeholder="Ingrese otro país"
+            name="nuevo_pais"
+            value={nombre_pais}
+            onChange={(e) => formularioCambio(e)}
+          />
           <label className='label'>País de residencia</label>
           <span className='barra'></span>
         </div>
         <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-          <button className="btn btn-primary" onClick={guardarUsuario} id='btnAceptar'>
+          <button className="btn btn-primary" onChange={habilitarBtnAceptar} onClick={guardarUsuario} id='btnAceptar'>
             Agregar
           </button>
           <button className="btn btn-danger">Cancelar</button>

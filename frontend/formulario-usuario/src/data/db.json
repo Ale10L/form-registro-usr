@@ -1,38 +1,61 @@
 {
   "usuarios-local": [
     {
-      "usuario_id": 1,
-      "nombre_completo": "Alejandro",
-      "fecha_nacimiento": "02/04/1991",
-      "correo_electronico": "alejandro_ghiringhelli@gmail.com",
-      "contraseña": "12345",
+      "id": 1,
+      "nombre_completo": "Alejandro Ghiringhelli",
+      "fecha_nacimiento": "1991-04-02T21:00",
+      "correo_electronico": "alejandroghiringhelli@gmail.com",
+      "contraseña": "123",
       "genero_id": 1,
-      "pais_id": 1
+      "pais_id": 4,
+      "nuevo_pais": "Argentina"
+    },
+    {
+      "id": 2,
+      "nombre_completo": "Jon Snow",
+      "fecha_nacimiento": "1985-05-15T05:05",
+      "correo_electronico": "jonnosabesnada@bastardo.com",
+      "contraseña": "123",
+      "genero_id": 3,
+      "pais_id": 5,
+      "nuevo_genero": "Dragón sin saberlo",
+      "nuevo_pais": "Winterfel"
     }
   ],
   "generos-local": [
     {
-        "genero_id": 1,
-        "nombre_genero": "Masculino"
+      "id": 1,
+      "nombre_genero": "Masculino"
     },
     {
-        "genero_id": 2,
-        "nombre_genero": "Femenino"
+      "id": 2,
+      "nombre_genero": "Femenino"
+    },
+    {
+      "nombre_genero": "Dragón sin saberlo",
+      "id": 3
     }
-    
   ],
   "pais-local": [
     {
-        "pais_id": 1,
-        "nombre_pais": "México"
+      "id": 1,
+      "nombre_pais": "México"
     },
     {
-        "pais_id": 2,
-        "nombre_pais": "Estados Unidos"
+      "id": 2,
+      "nombre_pais": "Estados Unidos"
     },
     {
-        "pais_id": 3,
-        "nombre_pais": "Canadá"
+      "id": 3,
+      "nombre_pais": "Canadá"
+    },
+    {
+      "nombre_pais": "Argentina",
+      "id": 4
+    },
+    {
+      "nombre_pais": "Winterfel",
+      "id": 5
     }
   ]
 }

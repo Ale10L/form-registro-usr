@@ -37,6 +37,18 @@ const FormularioUsuario = () => {
   const { idGenero } = useParams()
   const { idPais } = useParams()
 
+  const [validaPass, setValidaPass] = useState({ confirmacion: '' })
+  const { confirmacion } = validaPass
+  const [habilitarOtroGenero, setHabilitarOtroGenero] = useState(false);
+  const [habilitarOtroPais, setHabilitarOtroPais] = useState(false);
+  const [camposCompletos, setCamposCompletos] = useState({
+    nombre_completo: false,
+    fecha_nacimiento: false,
+    correo_electronico: false,
+    contraseña: false,
+    confirmacion: false,
+  });
+
   const formularioCambio = (e) => {
     if (e.target) {
       const { name, value } = e.target;
@@ -84,13 +96,6 @@ const FormularioUsuario = () => {
     }
   };
 
-  const [camposCompletos, setCamposCompletos] = useState({
-    nombre_completo: false,
-    fecha_nacimiento: false,
-    correo_electronico: false,
-    contraseña: false,
-    confirmacion: false,
-  });
 
   const habilitarBtnAceptar = () => {
     let coinciden = contraseña === confirmacion ? true : false
@@ -115,11 +120,6 @@ const FormularioUsuario = () => {
       setHabilitarOtroPais(false);
     }
   }
-
-  const [validaPass, setValidaPass] = useState({ confirmacion: '' })
-  const { confirmacion } = validaPass
-  const [habilitarOtroGenero, setHabilitarOtroGenero] = useState(false);
-  const [habilitarOtroPais, setHabilitarOtroPais] = useState(false);
 
   const eventoContraseña = (e) => {
     const { name, value } = e.target
@@ -361,6 +361,5 @@ const FormularioUsuario = () => {
     </div>
   );
 }
-
 
 export default FormularioUsuario;
