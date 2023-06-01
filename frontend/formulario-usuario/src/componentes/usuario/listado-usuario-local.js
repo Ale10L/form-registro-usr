@@ -51,21 +51,15 @@ const ListadoUsuarioLocal = () => {
             <table className='table table-striped table-hover'>
                 <thead className='table-dark'>
                     <tr>
-                        <th className='text-center' scope='col'>ID</th>
                         <th className='text-center' scope='col'>NOMBRE COMPLETO</th>
                         <th className='text-center' scope='col'>CORREO ELECTRONICO</th>
-                        <th className='text-center' scope='col'>GENERO</th>
-                        <th className='text-center' scope='col'>PAIS</th>
                     </tr>
                 </thead>
                 <tbody>
                     {usuarios.map((usuario) => (
                         <tr key={usuario.id}>
-                            <td className='text-center text-white'>{usuario.id}</td>
                             <td className='text-center text-white'>{usuario.nombre_completo}</td>
                             <td className='text-center text-white'>{usuario.correo_electronico}</td>
-                            <td className='text-center text-white'>{generos.map((gen) => (gen.id === usuario.genero_id ? gen.nombre_genero : ''))}</td>
-                            <td className='text-center text-white'>{paises.map((pais) => (pais.id === usuario.pais_id ? pais.nombre_pais : ''))}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import validator from "validator";
+
 
 const FormularioUsuarioLocal = () => {
   const [usuarios, setUsuarios] = useState([])
@@ -24,6 +26,8 @@ const FormularioUsuarioLocal = () => {
   const { nombre_genero } = genero
   const { nombre_pais } = pais
 
+  const [edad, setEdad] = useState('')
+
   const { idUsuario } = useParams()
   const { idGenero } = useParams()
   const { idPais } = useParams()
@@ -44,12 +48,19 @@ const FormularioUsuarioLocal = () => {
     if (e.target) {
       const { name, value } = e.target;
       if (name !== 'confirmacion') {
-        console.log(name + ": " + value)
         setUsuario({
           ...usuario,
           [name]: value
         })
       }
+
+      if (name === 'fecha_nacimiento') {
+        const fecha_actual = new Date()
+        const fec_nac = new Date(value)
+        fec_nac.setDate(fec_nac.getDate() + 1)
+        setEdad(parseInt((fecha_actual - fec_nac) / (1000 * 60 * 60 * 24 * 365)))
+      }
+
       if (name === "nuevo_genero") {
         setGenero({
           ...genero,
@@ -76,8 +87,17 @@ const FormularioUsuarioLocal = () => {
 
   const habilitarBtnAceptar = () => {
     let coinciden = contraseña === confirmacion ? true : false
+    let validarEmail = controlEmail(usuario.correo_electronico)
+    let validarEdad = controlEdad()
     let btnAceptar = true
-    if (camposCompletos.nombre_completo === true && camposCompletos.fecha_nacimiento === true && camposCompletos.correo_electronico === true && camposCompletos.contraseña === true && camposCompletos.confirmacion === true && coinciden === true) {
+    if (camposCompletos.nombre_completo === true &&
+      camposCompletos.fecha_nacimiento === true &&
+      camposCompletos.correo_electronico === true &&
+      camposCompletos.contraseña === true &&
+      camposCompletos.confirmacion === true &&
+      coinciden === true &&
+      validarEmail === true &&
+      validarEdad === true) {
       btnAceptar = false
     }
     return btnAceptar
@@ -99,7 +119,7 @@ const FormularioUsuarioLocal = () => {
       })
     }
 
-    return contraseña === confirmacion ? true : false
+    return contraseña === confirmacion || (contraseña !== '' && confirmacion !== '') ? true : false
   }
 
   const habilitarInputOtro = (e) => {
@@ -115,6 +135,20 @@ const FormularioUsuarioLocal = () => {
     } else {
       setHabilitarOtroPais(false);
     }
+  }
+
+  const controlEdad = () => {
+    return edad >= 18 ? true : false
+  }
+
+  const controlEmail = (correo) => {
+    //const expresion_regular = new RegExp("[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?")
+    if (validator.isEmail(correo)) {
+      return true
+    } else {
+      return false
+    }
+
   }
 
   const obtenerUsuarios = () => {
@@ -174,10 +208,10 @@ const FormularioUsuarioLocal = () => {
         .catch((error) => {
           alert(error);
         })
-      }
-      
-      if (pais.nombre_pais !== "") {
-        axios.post(`http://localhost:3030/pais-local`, pais)
+    }
+
+    if (pais.nombre_pais !== "") {
+      axios.post(`http://localhost:3030/pais-local`, pais)
         .then(() => {
           alert("Se registró un nuevo país")
         })
@@ -185,11 +219,11 @@ const FormularioUsuarioLocal = () => {
           alert(error);
         })
     }
-    
-    if(usuario.genero_id === "otro_genero"){
+
+    if (usuario.genero_id === "otro_genero") {
       usuario.genero_id = generos.length + 1
     }
-    if(usuario.pais_id === "otro_pais"){
+    if (usuario.pais_id === "otro_pais") {
       usuario.pais_id = paises.length + 1
     }
     usuario.genero_id = parseInt(usuario.genero_id)
@@ -222,7 +256,7 @@ const FormularioUsuarioLocal = () => {
         </div>
         <div className='form_group'>
           <input
-            type="datetime-local"
+            type="date"
             className='fecha_nacimiento'
             name='fecha_nacimiento'
             value={usuario.fecha_nacimiento}
@@ -232,18 +266,21 @@ const FormularioUsuarioLocal = () => {
           <span className='barra'></span>
           <label className='label'>Fecha de nacimiento</label>
           <label className='text-white' hidden={camposCompletos.fecha_nacimiento}>El campo fecha de nacimiento es obligatorio</label>
+          <label className='text-white' hidden={controlEdad()}>El usuario debe ser mayor de edad</label>
         </div>
         <div className='form_group'>
           <input
-            type="text"
+            type="email"
             className='correo_electronico'
             name='correo_electronico'
             value={usuario.correo_electronico}
             onChange={(e) => formularioCambio(e)}
+            //pattern="[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
             required
           />
-          <label className='label'>Correo electrónico</label>
+          <span><label className='label'>Correo electrónico</label></span>
           <label className='text-white' hidden={camposCompletos.correo_electronico}>El campo correo electrónico es obligatorio</label>
+          <label className='text-white' hidden={controlEmail(usuario.correo_electronico)}>Correo electrónico inválido</label>
           <span className='barra'></span>
         </div>
         <div>
@@ -259,7 +296,6 @@ const FormularioUsuarioLocal = () => {
             <label className='label'>Contraseña</label>
             <label className='text-white' hidden={camposCompletos.contraseña}>El campo contraseña es obligatorio</label>
             <span className='barra'></span>
-            {/* <label className='text-white' hidden={(e) => {eventoContraseña(e)}}>Las contraseñas deben coincidir</label> */}
           </div>
           <div className='form_group'>
             <input
@@ -280,9 +316,9 @@ const FormularioUsuarioLocal = () => {
             className='genero'
             required
             name='genero_id'
-            //value={usuario.genero_id}
             onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
           >
+            <option selected disabled={true}>Seleccione un género</option>
             {generos.map((gen) => (
               <option key={gen.id}
                 value={gen.id}
@@ -292,6 +328,7 @@ const FormularioUsuarioLocal = () => {
           </select>
           <input
             hidden={!habilitarOtroGenero}
+            className="genero"
             placeholder="Ingrese otro género"
             name="nuevo_genero"
             value={nombre_genero}
@@ -305,9 +342,9 @@ const FormularioUsuarioLocal = () => {
             className='pais'
             required
             name='pais_id'
-            //value={usuario.pais_id}
             onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
           >
+            <option selected disabled={true}>Seleccione un país</option>
             {paises.map((pais) => (
               <option key={pais.id} value={pais.id}
               >{pais.id} - {pais.nombre_pais}</option>
@@ -317,6 +354,7 @@ const FormularioUsuarioLocal = () => {
           <input
             hidden={!habilitarOtroPais}
             placeholder="Ingrese otro país"
+            className="pais"
             name="nuevo_pais"
             value={nombre_pais}
             onChange={(e) => formularioCambio(e)}
@@ -325,7 +363,7 @@ const FormularioUsuarioLocal = () => {
           <span className='barra'></span>
         </div>
         <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-          <button className="btn btn-primary" onChange={habilitarBtnAceptar} onClick={guardarUsuario} id='btnAceptar'>
+          <button className="btn btn-primary" disabled={habilitarBtnAceptar()} onClick={guardarUsuario} id='btnAceptar'>
             Agregar
           </button>
           <button className="btn btn-danger">Cancelar</button>
