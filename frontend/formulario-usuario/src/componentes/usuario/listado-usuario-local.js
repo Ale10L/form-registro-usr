@@ -48,7 +48,7 @@ const ListadoUsuarioLocal = () => {
     return (
         <div className='row'>
             <div><button className='btn btn-warning' id='btnVolver'><Link to='/usuarios/agregar-usuario-local'className='text-black'>Volver</Link></button></div>
-            <table className='table table-striped table-hover'>
+            <table className='table'>
                 <thead className='table-dark'>
                     <tr>
                         <th className='text-center' scope='col'>NOMBRE COMPLETO</th>

@@ -275,7 +275,6 @@ const FormularioUsuarioLocal = () => {
             name='correo_electronico'
             value={usuario.correo_electronico}
             onChange={(e) => formularioCambio(e)}
-            //pattern="[a-zA-Z0-9!#$%&'*_+-]([\.]?[a-zA-Z0-9!#$%&'*_+-])+@[a-zA-Z0-9]([^@&%$\/()=?¿!.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?"
             required
           />
           <span><label className='label'>Correo electrónico</label></span>
@@ -317,8 +316,9 @@ const FormularioUsuarioLocal = () => {
             required
             name='genero_id'
             onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            defaultValue="seleccione_genero"
           >
-            <option selected disabled={true}>Seleccione un género</option>
+            <option value="seleccione_genero" disabled={true}>Seleccione un género</option>
             {generos.map((gen) => (
               <option key={gen.id}
                 value={gen.id}
@@ -343,8 +343,9 @@ const FormularioUsuarioLocal = () => {
             required
             name='pais_id'
             onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            defaultValue="seleccione_pais"
           >
-            <option selected disabled={true}>Seleccione un país</option>
+            <option value="seleccione_pais" disabled={true}>Seleccione un país</option>
             {paises.map((pais) => (
               <option key={pais.id} value={pais.id}
               >{pais.id} - {pais.nombre_pais}</option>

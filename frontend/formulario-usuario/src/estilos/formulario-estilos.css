@@ -8,13 +8,10 @@
 }
 
 .container {
- 
-  height: 1200px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  
 }
 
 .titulo {
@@ -327,4 +324,8 @@
 
 #btnVolver{
   margin-bottom: 30px;
+}
+
+.table{
+  margin-bottom: 100%;
 }

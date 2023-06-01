@@ -15,11 +15,11 @@ const RouterComponent = () => {
         <Router>
             <div className="ms-3 mb-3">
                 
-                <nav className="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
+                {/* <nav className="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
                     <Link to='/usuarios' className="nav-link">Usuarios</Link>
                     <Link to='/generos' className="nav-link">Géneros</Link>
                     <Link to='/pais' className="nav-link">Países</Link>
-                </nav>
+                </nav> */}
                 <nav className="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
                     <Link to='/usuarios-local' className="nav-link">Usuarios Local</Link>
                     <Link to='/generos-local' className="nav-link">Géneros Local</Link>
@@ -29,18 +29,19 @@ const RouterComponent = () => {
             <div>
                 <Routes>
                     {/* LISTADOS */}
-                    <Route path='/usuarios' exact element={<ListadoUsuario/>} />
+                    {/* <Route path='/usuarios' exact element={<ListadoUsuario/>} />
                     <Route path='/generos' exact element={<ListadoGenero/>} />
-                    <Route path='/pais' exact element={<ListadoPais/>} />
+                    <Route path='/pais' exact element={<ListadoPais/>} /> */}
                     <Route path='/usuarios-local' exact element={<ListadoUsuarioLocal/>} />
                     <Route path='/generos-local' exact element={<ListadoGeneroLocal/>} />
                     <Route path='/pais-local' exact element={<ListadoPaisLocal/>} />
 
                     {/* FORMULARIOS  */}
-                    <Route path='/' exact element={<FormularioUsuario/>} />
-                    <Route path='/usuarios/agregar-usuario' exact element={<FormularioUsuario/>} />
+                    {/* <Route path='/' exact element={<FormularioUsuario/>} /> */}
+                    <Route path='/' exact element={<FormularioUsuarioLocal/>} />
+                    {/* <Route path='/usuarios/agregar-usuario' exact element={<FormularioUsuario/>} /> */}
                     <Route path='/usuarios/agregar-usuario-local' exact element={<FormularioUsuarioLocal/>} />
-                    <Route path='/genero/agregar-genero' exact element={<FormularioGenero/>}/>
+                    {/* <Route path='/genero/agregar-genero' exact element={<FormularioGenero/>}/> */}
                 </Routes>
             </div>
         </Router>
