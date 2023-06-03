@@ -1,0 +1,98 @@
+{
+  "usuarios-local": [
+    {
+      "id": 1,
+      "nombre_completo": "Alejandro Ghiringhelli",
+      "fecha_nacimiento": "1991-04-02T21:00",
+      "correo_electronico": "alejandroghiringhelli@gmail.com",
+      "contraseña": "123",
+      "genero_id": 1,
+      "pais_id": 4,
+      "nuevo_pais": "Argentina"
+    },
+    {
+      "id": 2,
+      "nombre_completo": "Jon Snow",
+      "fecha_nacimiento": "1985-05-15T05:05",
+      "correo_electronico": "jonnosabesnada@bastardo.com",
+      "contraseña": "123",
+      "genero_id": 3,
+      "pais_id": 5,
+      "nuevo_genero": "Dragón sin saberlo",
+      "nuevo_pais": "Winterfel"
+    },
+    {
+      "id": 3,
+      "nombre_completo": "Florencia de la Vega",
+      "fecha_nacimiento": "1975-03-02",
+      "correo_electronico": "flordelave@gmail.com",
+      "contraseña": "123",
+      "genero_id": 4,
+      "pais_id": 4,
+      "nuevo_genero": "Mujer trans"
+    },
+    {
+      "id": 4,
+      "nombre_completo": "Lucas Villagra",
+      "fecha_nacimiento": "2005-06-01",
+      "correo_electronico": "lucas_villagra@hotmail.com",
+      "contraseña": "123",
+      "genero_id": 1,
+      "pais_id": 1
+    },
+    {
+      "id": 5,
+      "nombre_completo": "Catherine Fulop",
+      "fecha_nacimiento": "1965-03-11",
+      "correo_electronico": "cathiefu@gmail.com",
+      "contraseña": "12345",
+      "genero_id": 2,
+      "pais_id": 6,
+      "nuevo_pais": "Venezuela"
+    }
+  ],
+  "generos-local": [
+    {
+      "id": 1,
+      "nombre_genero": "Masculino"
+    },
+    {
+      "id": 2,
+      "nombre_genero": "Femenino"
+    },
+    {
+      "nombre_genero": "Dragón sin saberlo",
+      "id": 3
+    },
+    {
+      "nombre_genero": "Mujer trans",
+      "id": 4
+    }
+  ],
+  "pais-local": [
+    {
+      "id": 1,
+      "nombre_pais": "México"
+    },
+    {
+      "id": 2,
+      "nombre_pais": "Estados Unidos"
+    },
+    {
+      "id": 3,
+      "nombre_pais": "Canadá"
+    },
+    {
+      "nombre_pais": "Argentina",
+      "id": 4
+    },
+    {
+      "nombre_pais": "Winterfel",
+      "id": 5
+    },
+    {
+      "nombre_pais": "Venezuela",
+      "id": 6
+    }
+  ]
+}
