@@ -124,22 +124,16 @@ const FormularioUsuarioLocal = () => {
 
   const habilitarInputOtro = (e) => {
     const { name, value } = e.target;
-    console.log("Habilita otro género antes del if: " + habilitarOtroGenero)
     if (name === "genero_id" && value === "otro_genero") {
       setHabilitarOtroGenero(true);
-      console.log("Habilita otro género dentro del if: " + habilitarOtroGenero)
     } else {
       setHabilitarOtroGenero(false);
-      console.log("Habilita otro género dentro del else: " + habilitarOtroGenero)
     }
 
-    console.log("Habilita otro país antes del if: " + habilitarOtroPais)
     if (name === "pais_id" && value === "otro_pais") {
       setHabilitarOtroPais(true);
-      console.log("Habilita otro país dentro del if: " + habilitarOtroPais)
     } else {
       setHabilitarOtroPais(false);
-      console.log("Habilita otro país dentro del else: " + habilitarOtroPais)
     }
   }
 
