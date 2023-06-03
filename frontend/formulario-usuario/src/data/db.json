@@ -39,6 +39,16 @@
       "contraseña": "123",
       "genero_id": 1,
       "pais_id": 1
+    },
+    {
+      "id": 5,
+      "nombre_completo": "Catherine Fulop",
+      "fecha_nacimiento": "1965-03-11",
+      "correo_electronico": "cathiefu@gmail.com",
+      "contraseña": "12345",
+      "genero_id": 2,
+      "pais_id": 6,
+      "nuevo_pais": "Venezuela"
     }
   ],
   "generos-local": [
@@ -79,6 +89,10 @@
     {
       "nombre_pais": "Winterfel",
       "id": 5
+    },
+    {
+      "nombre_pais": "Venezuela",
+      "id": 6
     }
   ]
 }
