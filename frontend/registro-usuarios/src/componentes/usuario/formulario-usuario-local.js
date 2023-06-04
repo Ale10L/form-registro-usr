@@ -79,7 +79,6 @@ const FormularioUsuarioLocal = () => {
         ...prevState,
         [name]: value !== "",
       }));
-
     } else {
       console.error("Evento no válido");
     }
@@ -122,14 +121,16 @@ const FormularioUsuarioLocal = () => {
     return contraseña === confirmacion || (contraseña !== '' && confirmacion !== '') ? true : false
   }
 
-  const habilitarInputOtro = (e) => {
+  const habilitarInputOtroGenero = (e) => {
     const { name, value } = e.target;
     if (name === "genero_id" && value === "otro_genero") {
       setHabilitarOtroGenero(true);
     } else {
       setHabilitarOtroGenero(false);
     }
-
+  }
+  const habilitarInputOtroPais = (e) => {
+    const { name, value } = e.target;
     if (name === "pais_id" && value === "otro_pais") {
       setHabilitarOtroPais(true);
     } else {
@@ -149,6 +150,18 @@ const FormularioUsuarioLocal = () => {
       return false
     }
 
+  }
+
+  const confrimarFormulario = () => {
+    // eslint-disable-next-line no-restricted-globals
+    let retVal = confirm("¿Desea enviar el formulario?")
+    if (retVal === true) {
+      alert("FORMULARIO ENVIADO")
+      return true
+    } else {
+      alert("FORMULARIO NO ENVIADO")
+      return false
+    }
   }
 
   const obtenerUsuarios = () => {
@@ -200,42 +213,45 @@ const FormularioUsuarioLocal = () => {
   }, [idPais]);
 
   const guardarUsuario = () => {
-    if (genero.nombre_genero !== "") {
-      axios.post(`http://localhost:3030/generos-local`, genero)
+    let enviarForm = confrimarFormulario()
+    if (enviarForm === true) {
+      if (genero.nombre_genero !== "") {
+        axios.post(`http://localhost:3030/generos-local`, genero)
+          .then(() => {
+          })
+          .catch((error) => {
+            alert(error);
+          })
+      }
+
+      if (pais.nombre_pais !== "") {
+        axios.post(`http://localhost:3030/pais-local`, pais)
+          .then(() => {
+          })
+          .catch((error) => {
+            alert(error);
+          })
+      }
+
+      if (usuario.genero_id === "otro_genero") {
+        usuario.genero_id = generos.length + 1
+      }
+      if (usuario.pais_id === "otro_pais") {
+        usuario.pais_id = paises.length + 1
+      }
+      usuario.genero_id = parseInt(usuario.genero_id)
+      usuario.pais_id = parseInt(usuario.pais_id)
+      axios.post(`http://localhost:3030/usuarios-local`, usuario)
         .then(() => {
-          alert("Se registró un nuevo género")
+          alert("Se registro un nuevo usuario");
+          navigate('/')
         })
         .catch((error) => {
           alert(error);
-        })
+        });
+    } else {
+      navigate('/')
     }
-
-    if (pais.nombre_pais !== "") {
-      axios.post(`http://localhost:3030/pais-local`, pais)
-        .then(() => {
-          alert("Se registró un nuevo país")
-        })
-        .catch((error) => {
-          alert(error);
-        })
-    }
-
-    if (usuario.genero_id === "otro_genero") {
-      usuario.genero_id = generos.length + 1
-    }
-    if (usuario.pais_id === "otro_pais") {
-      usuario.pais_id = paises.length + 1
-    }
-    usuario.genero_id = parseInt(usuario.genero_id)
-    usuario.pais_id = parseInt(usuario.pais_id)
-    axios.post(`http://localhost:3030/usuarios-local`, usuario)
-      .then(() => {
-        alert("Se registro un nuevo usuario");
-        navigate('/')
-      })
-      .catch((error) => {
-        alert(error);
-      });
   };
 
   return (
@@ -315,7 +331,7 @@ const FormularioUsuarioLocal = () => {
             className='genero'
             required
             name='genero_id'
-            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            onChange={(e) => { formularioCambio(e); habilitarInputOtroGenero(e) }}
             defaultValue="seleccione_genero"
           >
             <option value="seleccione_genero" disabled={true}>Seleccione un género</option>
@@ -327,7 +343,7 @@ const FormularioUsuarioLocal = () => {
             <option value="otro_genero">Otro</option>
           </select>
           <input
-            hidden={!habilitarOtroGenero}
+            hidden={!habilitarOtroGenero || camposCompletos.nombre_genero}
             className="genero"
             placeholder="Ingrese otro género"
             name="nuevo_genero"
@@ -342,7 +358,7 @@ const FormularioUsuarioLocal = () => {
             className='pais'
             required
             name='pais_id'
-            onChange={(e) => { formularioCambio(e); habilitarInputOtro(e) }}
+            onChange={(e) => { formularioCambio(e); habilitarInputOtroPais(e) }}
             defaultValue="seleccione_pais"
           >
             <option value="seleccione_pais" disabled={true}>Seleccione un país</option>
@@ -353,7 +369,7 @@ const FormularioUsuarioLocal = () => {
             <option value="otro_pais">Otro</option>
           </select>
           <input
-            hidden={!habilitarOtroPais}
+            hidden={!habilitarOtroPais || camposCompletos.nombre_pais}
             placeholder="Ingrese otro país"
             className="pais"
             name="nuevo_pais"

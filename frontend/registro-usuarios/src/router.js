@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import ListadoUsuario from './componentes/usuario/listado-usuario';
-import FormularioUsuario from './componentes/usuario/formulario-usuario';
-import FormularioGenero from './componentes/genero/formulario-genero';
-import ListadoGenero from './componentes/genero/listado-genero';
-import ListadoPais from './componentes/pais/listado-pais';
+// import ListadoUsuario from './componentes/usuario/listado-usuario';
+// import FormularioUsuario from './componentes/usuario/formulario-usuario';
+// import FormularioGenero from './componentes/genero/formulario-genero';
+// import ListadoGenero from './componentes/genero/listado-genero';
+// import ListadoPais from './componentes/pais/listado-pais';
 import FormularioUsuarioLocal from './componentes/usuario/formulario-usuario-local';
 import ListadoUsuarioLocal from './componentes/usuario/listado-usuario-local';
 import ListadoGeneroLocal from './componentes/genero/listado-genero-local';
@@ -21,9 +21,9 @@ const RouterComponent = () => {
                     <Link to='/pais' className="nav-link">Países</Link>
                 </nav> */}
                 <nav className="navbar navbar-expand-lg gap-2 d-md-flex justify-content-center">
-                    <Link to='/usuarios-local' className="nav-link">Usuarios Local</Link>
-                    <Link to='/generos-local' className="nav-link">Géneros Local</Link>
-                    <Link to='/pais-local' className="nav-link">Países Local</Link>
+                    <Link to='/usuarios-local' className="nav-link">Lista de usuarios registrados</Link>
+                    {/* <Link to='/generos-local' className="nav-link">Géneros Local</Link>
+                    <Link to='/pais-local' className="nav-link">Países Local</Link> */}
                 </nav>
             </div>
             <div>

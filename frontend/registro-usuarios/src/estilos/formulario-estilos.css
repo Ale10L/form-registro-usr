@@ -328,4 +328,5 @@
 
 .table{
   margin-bottom: 100%;
+  --bs-table-bg: to right, #1F1C18, #8E0E00;
 }
